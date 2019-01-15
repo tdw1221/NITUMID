@@ -1,0 +1,18 @@
+Package: NITUMID
+Type: Package
+Title: Non-negative Matrix Factorization-based Immune-TUmor MIcroenvironment Deconvolution
+Version: 0.1.0
+Author: Daiwei Tang, Seyoung Park
+Maintainer: The package maintainer <tangdavid12@gmail.com>
+Description: NITUMID (Non-negative Matrix Factorization-based Immune-TUmor MIcroenvironment Deconvolution framework) is a package for tumor-immmune microenvironment profiling via gene expression data. It takes advantage of non-negative matrix factorization (NMF) to simultaneously give estimates of both each component cell type's signature genes' expression (mRNA) levels, as well as their proportions in the mixture. It takes an ordinary gene expression matrix as input, and outputs signature genes' levels as well as cell types' proportions. Also, you could choose to input your own siganture genes.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    rlist,
+    gtools
+RoxygenNote: 6.1.0
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

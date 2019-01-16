@@ -13,9 +13,9 @@ Update_W_Tang(Y, W_itr, H_itr, beta_W, lam_W, A)
 
 \item{H_itr}{H matrix from previous step of iteration}
 
-\item{beta_W}{$\beta$ is the parameter controlling sparsity ridge penalty, see our paper for more information}
+\item{beta_W}{$\\beta$ is the parameter controlling sparsity ridge penalty, see our paper for more information}
 
-\item{lam_W}{$\lambda$ is the parameter imposing A's structure into resulting W, see our paper for more info}
+\item{lam_W}{$\\lambda$ is the parameter imposing A's structure into resulting W, see our paper for more info}
 
 \item{A}{The trichotomous guide matrix A}
 }

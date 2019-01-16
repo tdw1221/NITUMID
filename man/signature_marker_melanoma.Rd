@@ -5,7 +5,7 @@
 \alias{signature_marker_melanoma}
 \title{Siganture genes' information for immune cells and melanoma}
 \format{this is a dataframe with 53 rows and 4 variables:
-\describe {
+\describe{
   \item{Cell}{to which cell type is this gene a primary signature}
   \item{Secondary_cells}{to which cell type(s) is this gene a secondary signature}
   \item{gene_symbol}{the gene symbol}

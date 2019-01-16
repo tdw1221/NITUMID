@@ -13,7 +13,7 @@ your known cell types and NITUMID's cell types. This dataframe has two column, `
 from 1 to 11, you are not supposed to modify that; you can modify `destin_index` accordingly as DC-1, CD4-2, CD8-2, Macrophages-3,
 MB-4, NK-5, Monocytes-6, Plasma-6, MAST-6, Eosinophil-6, Melanoma-6. Basically, we merged CD4+ T cell and CD8+ T cell into one cell
 type, and all our cell types after monocytes into the 6-th cell type.
-\describe {
+\describe{
   \item{origina_index}{Indexed NITUMID's 11 cell types, from 1 to 11}
   \item{destin_index}{Indexed customized cell types }
 }

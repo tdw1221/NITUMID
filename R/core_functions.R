@@ -58,8 +58,6 @@ Update_W_Tang <- function(Y,W_itr,H_itr,beta_W,lam_W,A){
 #'
 #' @param H_itr H matrix from previous step of iteration
 #'
-#' @param beta_W \beta is the parameter controlling sparsity ridge penalty, see our paper for more information
-#'
 #' @param eta $\lambda$ is the parameter for ensuring column sums of H are 1s
 #'
 #' @return 'Update_H_Tang' returns the udpated H matrix after iteration

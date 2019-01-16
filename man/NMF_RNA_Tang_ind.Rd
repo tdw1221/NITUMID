@@ -32,7 +32,7 @@ $\\eta$ automatically, no need to spcify yourself}
 cell types number, you should change your $A$ matrix accordingly.}
 
 \item{scale_Data}{the parameter controlling which scaling method to use for $Y$: 0 indicates no scaling, 1 indicates
-scaling $||Y||_{F}=\sqrt{nm}$, where $n,m$ are dimensions of Y; 2 indicates scaling such that $||Y^{scaled}||_{F}=||log(Y^{raw}+1)||_{F}$}
+scaling $||Y||_{F}=\\sqrt{nm}$, where $n,m$ are dimensions of Y; 2 indicates scaling such that $||Y^{scaled}||_{F}=||log(Y^{raw}+1)||_{F}$}
 
 \item{perm_type}{logical variable, default TRUE. If TRUE, the function will do a permutation and measure consistency between results.}
 

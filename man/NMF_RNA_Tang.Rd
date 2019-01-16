@@ -14,8 +14,8 @@ NMF_RNA_Tang(Y, ini.W, ini.H, lam_W, beta_W, A, eta, tol = 10^-5,
 
 \item{ini.H}{Initial H matrx}
 
-\item{lam_W}{$\lambda$ is the parameter imposing A's structure into resulting W, see our paper for more info. In
-real calculation, upper level functions will automatically choose suitable $\lambda$ no need to set by yourself}
+\item{lam_W}{$\\lambda$ is the parameter imposing A's structure into resulting W, see our paper for more info. In
+real calculation, upper level functions will automatically choose suitable $\\lambda$ no need to set by yourself}
 
 \item{beta_W}{$\beta$ is the parameter controlling sparsity ridge penalty, see our paper for more information. In
 real calculation, upper level functions will automatically choose suitable $\beta$ no need to set by yourself}

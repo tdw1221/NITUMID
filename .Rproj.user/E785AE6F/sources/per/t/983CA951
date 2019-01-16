@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541278925482.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1692992530",
+    "id" : "983CA951",
+    "lastKnownWriteTime" : 1542335871,
+    "last_content_update" : 1542335871495,
+    "path" : "~/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R",
+    "project_path" : "R/core_functions.R",
+    "properties" : {
+        "cursorPosition" : "380,103",
+        "scrollLine" : "373"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

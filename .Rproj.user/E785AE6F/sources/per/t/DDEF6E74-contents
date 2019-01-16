@@ -46,11 +46,9 @@ head(signature_marker_melanoma)
 
 `Cell` tells you whcih specific cell type is this gene a signature gene to. If a gene has no-NA `Secondary_cells` values, that means despite this gene's significant expression level in one cell type, in the `Secondary_cells`, it also has reasonable expression level in those secondary cell types.
 
-Back to our NMF framework $Y=W\times H$, now we have $m=53$. Recall that the i-th column of $W$ represents the gene expression profile (of these 53 genes) in the i-th cell type, so for the signature genes for i-th cell type, their values in this column should be significantly larger. However, NMF by itself cannot achieve this kind of structure, so we introduce a guide matrix $A$ that helps us impose our desired strucutre for signature matrix. $A$ is a matrix with same dimension as $W$, and it is a trichotomous matrix consists of $1,0.5,0$.  An entry 1 for a specific cell type means the corresponding gene is highly expressed in that cell type, an entry 0 means that the gene is not expressed in the cell type, and an entry 0.5 means that the gene has an intermediate expression level in that cell type. 
+Back to our NMF framework $Y=W\times H$, now we have $m=53$. Recall that the i-th column of $W$ represents the gene expression profile (of these 53 genes) in the i-th cell type, so for the signature genes for i-th cell type, their values in this column should be significantly larger. However, NMF by itself cannot achieve this kind of structure, so we introduce a guide matrix $A$ that helps us impose our desired strucutre for signature matrix. $A$ is a matrix with same dimension as $W$, and it is a trichotomous matrix consists of $0,0.5,1$.  An entry 0 for a specific cell type means the corresponding gene is highly expressed in that cell type, an entry 1 means that the gene is not expressed in the cell type, and an entry 0.5 means that the gene has an intermediate expression level in that cell type. 
 
-**However, to make it compatible with our optimization setup, the $A$ for argument should be $\mathbb{1}-A$, in our manuscript, we defined the A that used in argument as \tilde{A}. Start now on, we will denote the guide matrix still as $A$ but the argument input A as $\tilde{A}$**
-
-You can take a look at our current $\tilde{A}$ whose variable name is `A_melanoma_v5`
+You can take a look at our current $A$ whose variable name is `A_melanoma_v5`
 
 ```{R}
 dim(A_melanoma_v5)
@@ -102,7 +100,6 @@ Once you obtain output from `Signature_Match`, you can proceed on to the main fu
 GSE6740_CD8_out <- NITUMID(Y = ematrix_GSE6740_CD8[signature_found$matched_index,],A = A_melanoma_v5,row_index = setdiff(seq(1,53),signature_found$missing_row_index),if.bulk = F,row_mean = row_mean_v5)
 ```
 If `if.bulk=F`, `NITUMID` returns two values:
-
 * A consistency table that tells you the results' consistencies under different parameter setups
 * result: a list of results under different parameter setups
 ```{R,cache=T}

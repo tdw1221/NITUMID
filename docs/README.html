@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Daiwei Tang" />
+
+<meta name="date" content="2018-11-18" />
+
+<title>A Brief Tutorial for NITUMID</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">A Brief Tutorial for NITUMID</h1>
+<h4 class="author"><em>Daiwei Tang</em></h4>
+<h4 class="date"><em>2018-11-18</em></h4>
+
+
+
+<div id="background-introduction" class="section level2">
+<h2>Background introduction</h2>
+<p>NITUMID is the R implementation of Non-negative Matrix Factorization-based Immune-TUmor MIcroenvironment Deconvolution, a statistical framework for tumor immune microenvironment deconvolution.</p>
+<p>During tumor development process, its interaction with the host immune system shapes a complex tumor microenvironment (TME) consisting of tumor, various infiltrating immune cells, and other non-cancerous cell types. Interests in understanding this microenvironment has been growing since the breakthrough of immunotherapy.</p>
+<p>One simple <em>in silico</em> method for profiling tumor immune microenvironment is via bulk tumor gene expression data, which can be seen as a mixture of all compoenent cell types (immune cells, tumor cells, etc.) gene expression profiles. Let’s consider a gene expresison matrix <span class="math inline">\(Y \in R^{m\times n}\)</span>, where <span class="math inline">\(m\)</span> rows are <span class="math inline">\(m\)</span> genes and <span class="math inline">\(n\)</span> columns are <span class="math inline">\(n\)</span> samples. Under the above framework, we can have the following:</p>
+<span class="math display">\[\begin{align}
+Y &amp;= W\cdot H\\
+W &amp;\in R^{m\times k}\\
+R &amp;\in R^{k \times n}
+\end{align}\]</span>
+<p>Here <span class="math inline">\(k\)</span> is the number of component cell types, i.e., we assume each sample’s gene expression profile (each column of <span class="math inline">\(Y\)</span>) is a linear mixture of the <span class="math inline">\(k\)</span> component cell types (<span class="math inline">\(k\)</span> columns of <span class="math inline">\(W\)</span>) with their corresponding weights (<span class="math inline">\(n\)</span> columns of <span class="math inline">\(H\)</span>). Further, since the fractions of all component cell types should sum up to 1, we requires each column of <span class="math inline">\(H\)</span> sum up to 1. Notice that since <span class="math inline">\(Y\)</span>, <span class="math inline">\(W\)</span> and <span class="math inline">\(H\)</span> here are all non-negative matrices, it becones essentially a non-nagative matrix factorization problem (NMF) under regularizaiton.</p>
+<p>Current version of NITUMID only supports tumor microenvironment deconvolution for bulk melanoma data. And current framework includes 11 component cell types: Dendritic cells, CD4+ T cell, CD8+ T cell, Macrophages, B cells, Natural killer cells (NK/NKT), Monocytes, Plasma, MAST cell, Eosinophils and melanoma. NITUMID’s framework is generally applicable, the only issue limiting us from extending to more tumor types is training data, and we expect to support more tumor types in near future.</p>
+<p>Common microarray or RNA-Seq give measurements for &gt;10000 genes’ expression, most of which are not significantly different across cell types, so they would not help deconvolution but instead adding more computational burden. So it is reasonable to only choose a small subset of genes (a.k.a signature genes) whose expression levels help us differentiate among cell types.</p>
+<p>The ideal signature genes are those who are exclusively expressing in one specific cell types. Also, if one gene is expression mostly in a few of our component cell types, it should also help.</p>
+<p>In our current version of NITUMID, we curated a list of 53 signature genes for our 11 cell types, their information can be seen in <code>signature_marker_melanoma</code> in this package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(signature_marker_melanoma)
+<span class="co">#&gt;   Cell            Secondary_cells gene_symbol</span>
+<span class="co">#&gt; 1   DC                       &lt;NA&gt;        CD1E</span>
+<span class="co">#&gt; 2   DC                       &lt;NA&gt;    DNASE1L3</span>
+<span class="co">#&gt; 3   DC Macrophages,Monocytes,MAST     EMILIN2</span>
+<span class="co">#&gt; 4   DC  Macrophages,MB, Monocytes       NAPSB</span>
+<span class="co">#&gt; 5  CD4                     CD8,MB        ANK3</span>
+<span class="co">#&gt; 6  CD4          CD8,MAST,Melanoma      INPP4B</span>
+<span class="co">#&gt;                                                                                                                  Supporting_Evidence</span>
+<span class="co">#&gt; 1 CD1E(cluster of differentiation 1) is a family of glycoproteins expressed on the surface of various human antugen-presenting cells</span>
+<span class="co">#&gt; 2                                                                                   https://www.nature.com/articles/nrrheum.2016.111</span>
+<span class="co">#&gt; 3                                                                                                   elastin microfibril interfacer 2</span>
+<span class="co">#&gt; 4                                                                                            napsin B aspartic peptidase, pseudogene</span>
+<span class="co">#&gt; 5                                                                              https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1479811/</span>
+<span class="co">#&gt; 6                                                                                                                               &lt;NA&gt;</span></code></pre></div>
+<p><code>Cell</code> tells you whcih specific cell type is this gene a signature gene to. If a gene has no-NA <code>Secondary_cells</code> values, that means despite this gene’s significant expression level in one cell type, in the <code>Secondary_cells</code>, it also has reasonable expression level in those secondary cell types.</p>
+<p>Back to our NMF framework <span class="math inline">\(Y=W\times H\)</span>, now we have <span class="math inline">\(m=53\)</span>. Recall that the i-th column of <span class="math inline">\(W\)</span> represents the gene expression profile (of these 53 genes) in the i-th cell type, so for the signature genes for i-th cell type, their values in this column should be significantly larger. However, NMF by itself cannot achieve this kind of structure, so we introduce a guide matrix <span class="math inline">\(A\)</span> that helps us impose our desired strucutre for signature matrix. <span class="math inline">\(A\)</span> is a matrix with same dimension as <span class="math inline">\(W\)</span>, and it is a trichotomous matrix consists of <span class="math inline">\(1,0.5,0\)</span>. An entry 1 for a specific cell type means the corresponding gene is highly expressed in that cell type, an entry 0 means that the gene is not expressed in the cell type, and an entry 0.5 means that the gene has an intermediate expression level in that cell type.</p>
+<p><strong>However, to make it compatible with our optimization setup, the <span class="math inline">\(A\)</span> for argument should be <span class="math inline">\(\mathbb{1}-A\)</span>, in our manuscript, we defined the A that used in argument as . Start now on, we will denote the guide matrix still as <span class="math inline">\(A\)</span> but the argument input A as <span class="math inline">\(\tilde{A}\)</span></strong></p>
+<p>You can take a look at our current <span class="math inline">\(\tilde{A}\)</span> whose variable name is <code>A_melanoma_v5</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(A_melanoma_v5)
+<span class="co">#&gt; [1] 53 11</span>
+A_melanoma_v5[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]
+<span class="co">#&gt;      DC CD4 CD8 Macrophages MB NK Monocytes Plasma MAST Eosinophil</span>
+<span class="co">#&gt; [1,]  0   1   1         1.0  1  1       1.0      1  1.0          1</span>
+<span class="co">#&gt; [2,]  0   1   1         1.0  1  1       1.0      1  1.0          1</span>
+<span class="co">#&gt; [3,]  0   1   1         0.5  1  1       0.5      1  0.5          1</span>
+<span class="co">#&gt;      Melanoma</span>
+<span class="co">#&gt; [1,]        1</span>
+<span class="co">#&gt; [2,]        1</span>
+<span class="co">#&gt; [3,]        1</span></code></pre></div>
+<p>Another issue with NMF is its instability, which comes as a price for flexibility. To get over this issue, for each of the NMF run, we use different parameters and choose the most stable setup. So for each run of NITUMID, on top of the original dataset, we will do a permutation and measure their results’ consistency. NITUMID will return a consistency table as well as factorization results under different parameters, and we usually choose the factorization results under the most stable parameters.</p>
+<p>For full details about how we set up the optimization proceudure, choose parameter and consistenct measurement, please see our manuscript for more details.</p>
+</div>
+<div id="getting-start-with-nitumid" class="section level2">
+<h2>Getting start with NITUMID</h2>
+<p>The raw data you should prepare for NITUMID should be a data matrix with its rows genes and columns samples, its rowname is required to be gene symbol, for example, the following data matrix is gene expression profiles for 20 CD8+ T cells</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(ematrix_GSE6740_CD8)
+<span class="co">#&gt; [1] 12054    20</span>
+<span class="kw">rownames</span>(ematrix_GSE6740_CD8)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]
+<span class="co">#&gt;  [1] &quot;NAT2&quot;       &quot;ADA&quot;        &quot;CDH2&quot;       &quot;AKT3&quot;       &quot;MED6&quot;      </span>
+<span class="co">#&gt;  [6] &quot;NR2E3&quot;      &quot;NAALAD2&quot;    &quot;NAALADL1&quot;   &quot;CDKN2B-AS1&quot; &quot;ACOT8&quot;</span>
+<span class="kw">class</span>(ematrix_GSE6740_CD8)
+<span class="co">#&gt; [1] &quot;matrix&quot;</span></code></pre></div>
+<p>The first step should be finding the signature genes in the rows of <code>ematrix_GSE6740_CD8</code>, which can be done by <code>Signature_Match</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">signature_found &lt;-<span class="st"> </span><span class="kw">Signature_Match</span>(<span class="dt">gene_expression =</span> ematrix_GSE6740_CD8,<span class="dt">signature_genes =</span> <span class="kw">as.character</span>(signature_marker_melanoma<span class="op">$</span>gene_symbol))
+
+<span class="co">#return signature genes' row indexes</span>
+signature_found<span class="op">$</span>matched_index
+<span class="co">#&gt;  [1] 11268  1771  1221  1221  3789 11005  6249 10925 11313  5614  1307</span>
+<span class="co">#&gt; [12] 11397 11407  4920  8042  4380  5169   465  2202  2826 11443  6708</span>
+<span class="co">#&gt; [23]  5653  1221  9749  1221  1221  5277   427 11158  5886  8189  9858</span>
+<span class="co">#&gt; [34]  9262  5349  8267  4925  9372  3437  1221  1221  9204  3577  1221</span>
+<span class="co">#&gt; [45]  1221  1198  6182  1221  1254  8482  1237  1221  6273</span>
+<span class="co">#which siganture genes are not found in the dataset</span>
+signature_found<span class="op">$</span>missing_row_index
+<span class="co">#&gt;  [1]  3  4 24 26 27 40 41 44 45 48 52</span></code></pre></div>
+<p><code>Signature_Match</code> takes two/three inputs:</p>
+<ol style="list-style-type: decimal">
+<li>Your raw gene expression matrix</li>
+<li>A vector of all signature gene symbols, default values are the 53 genes from us</li>
+<li>Optional, if some of the signature genes have alias, you can specify them with an extra vector.</li>
+</ol>
+<p><code>Signature_Match</code> returns two values: 1. <code>matched_index</code> is a numeric vector contains all siganture genes’ corresponding rows in the dataset 2. For those siganture genes that don’t present in the dataset, their indexes are also recorded <code>missing_row_index</code>. Notice that those missing siganture genes still have a default value 1221 in <code>matched_index</code>.</p>
+<p>Once you obtain output from <code>Signature_Match</code>, you can proceed on to the main function <code>NITUMID</code>.<code>NITUMID</code> takes sevral arguments, for now we will go through those most important ones:</p>
+<ul>
+<li>Y: the 53 by sample size gene expression matrix. Notice that here you should not input the raw Y! Use the index from <code>Signature_Match</code> to subset <span class="math inline">\(Y\)</span></li>
+<li>A: the trichotomous guide matrix <span class="math inline">\(A\)</span>, default value is our <code>A_melanoma_v5</code></li>
+<li>row_index: a numeric vector specifying which signature genes are being used, this argument is important since it’s a common case when some of the signature genes are not found. If you have output from <code>Signature_Match</code>, you can simply generate the <code>row_index</code> by setdiff(seq(1,53),missing_row_index)</li>
+<li>if.bulk: a logical value, indicating if the input data <span class="math inline">\(Y\)</span> is of bulk tumor gene expression data. Here since we are using pure CD8+ T cell, we should set it as FALSE.</li>
+<li>row_mean: a numeric vector same length as #{signature genes}, in our case 53, this is a vector representing the mean gene expression level across all cell types, default value is <code>row_mean_v5</code>. The goal of this argument is to help normalizing <span class="math inline">\(Y\)</span>, it has not to be very accurate as long as it can represents in general each gene’s level.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">GSE6740_CD8_out &lt;-<span class="st"> </span><span class="kw">NITUMID</span>(<span class="dt">Y =</span> ematrix_GSE6740_CD8[signature_found<span class="op">$</span>matched_index,],<span class="dt">A =</span> A_melanoma_v5,<span class="dt">row_index =</span> <span class="kw">setdiff</span>(<span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">53</span>),signature_found<span class="op">$</span>missing_row_index),<span class="dt">if.bulk =</span> F,<span class="dt">row_mean =</span> row_mean_v5)</code></pre></div>
+<p>If <code>if.bulk=F</code>, <code>NITUMID</code> returns two values:</p>
+<ul>
+<li>A consistency table that tells you the results’ consistencies under different parameter setups</li>
+<li>result: a list of results under different parameter setups</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">GSE6740_CD8_out<span class="op">$</span>consistency_table
+<span class="co">#&gt; N1S1 N1S2 N2S1 </span>
+<span class="co">#&gt;    1    1    1</span></code></pre></div>
+<p>Here since all of the consistencies are 1, we just show the results of the second one:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">GSE6740_CD8_out<span class="op">$</span>result[[<span class="dv">2</span>]]<span class="op">$</span>H
+<span class="co">#&gt;             GSM155179.CEL GSM155181.CEL GSM155183.CEL GSM155185.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 1.259785e-310</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 1.392213e-310</span>
+<span class="co">#&gt; CD8          1.661126e+00  1.661404e+00  1.531427e+00  1.430981e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 1.266970e-310</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 1.262604e-310</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 1.397852e-310</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 1.257458e-310</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 1.260601e-310</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 1.282871e-310</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 1.263383e-310</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 1.278064e-310</span>
+<span class="co">#&gt;             GSM155187.CEL GSM155190.CEL GSM155195.CEL GSM155201.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD8          1.709909e+00  1.519111e+00  1.646439e+00  1.778649e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt;             GSM155203.CEL GSM155206.CEL GSM155219.CEL GSM155221.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD8          1.528207e+00  1.542562e+00  1.660036e+00  1.732431e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt;             GSM155223.CEL GSM155225.CEL GSM155227.CEL GSM155229.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD8          1.645335e+00  1.563941e+00  1.650307e+00  1.657114e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt;             GSM155232.CEL GSM155234.CEL GSM155236.CEL GSM155238.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.061220e-321</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.471294e-321</span>
+<span class="co">#&gt; CD8          1.575163e+00  1.571083e+00  1.903565e+00  1.448490e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.110626e-321</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.066160e-321</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.397184e-321</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.056279e-321</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.061220e-321</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.194617e-321</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.071101e-321</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.130389e-321</span></code></pre></div>
+<p>As we can see here, all the samples have 1s as their CD8 proportions, i.e., all the samples are classified to CD8+ T cell.</p>
+<p>Let’s look at another example of bulk tumor data, the proceudure are the same except <code>if.bulk=FALSE</code>.</p>
+<p>Here <code>Nivolumab_rna_sub</code> is a 53 by 119 matrix whose rows are the 53 signature genes (we omitted the step for finding signature genes)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(Nivolumab_rna_sub)
+<span class="co">#&gt; [1]  53 118</span>
+<span class="kw">head</span>(Nivolumab_rna_sub[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])
+<span class="co">#&gt;          Pt101_On Pt101_Pre Pt103_On Pt103_Pre</span>
+<span class="co">#&gt; CD1E          736       524      129       272</span>
+<span class="co">#&gt; DNASE1L3     8566      6185       33       292</span>
+<span class="co">#&gt; EMILIN2      1088       902      711      1599</span>
+<span class="co">#&gt; NAPSB       10234     11924      232      2013</span>
+<span class="co">#&gt; ANK3         1538       819      232       129</span>
+<span class="co">#&gt; INPP4B       1670      1315     3086       491</span>
+NIVO_out &lt;-<span class="st"> </span><span class="kw">NITUMID</span>(<span class="dt">Y =</span> Nivolumab_rna_sub,<span class="dt">A =</span> A_melanoma_v5,<span class="dt">row_index =</span> <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">53</span>),<span class="dt">if.bulk =</span> T,<span class="dt">row_mean =</span> row_mean_v5)
+NIVO_out<span class="op">$</span>consistency_table
+<span class="co">#&gt; [1] 0.9606342</span>
+NIVO_out<span class="op">$</span>result[[<span class="dv">1</span>]]<span class="op">$</span>H
+<span class="co">#&gt;                 Pt101_On    Pt101_Pre    Pt103_On    Pt103_Pre    Pt105_On</span>
+<span class="co">#&gt; DC          7.536089e-15 2.695056e-11 0.092855901 2.002952e-07 0.075622716</span>
+<span class="co">#&gt; CD4         4.934827e-14 2.119094e-11 0.065016856 4.622485e-07 0.087502294</span>
+<span class="co">#&gt; CD8         1.800110e-01 1.880853e-01 0.076499446 3.927810e-01 0.119878517</span>
+<span class="co">#&gt; Macrophages 2.922514e-01 3.430967e-01 0.003797129 2.916511e-02 0.004561130</span>
+<span class="co">#&gt; MB          2.853938e-18 3.061461e-15 0.102505964 8.428828e-08 0.081031394</span>
+<span class="co">#&gt; NK          2.279869e-18 2.376029e-15 0.087697316 1.596353e-07 0.070258349</span>
+<span class="co">#&gt; Monocytes   9.802236e-12 1.538426e-10 0.006944917 5.834206e-02 0.005083821</span>
+<span class="co">#&gt; Plasma      4.039111e-01 2.209398e-01 0.003042920 2.083437e-02 0.005832677</span>
+<span class="co">#&gt; MAST        8.960046e-02 7.153380e-02 0.013761733 1.440588e-01 0.010369486</span>
+<span class="co">#&gt; Eosinophil  7.976390e-16 7.445041e-03 0.002301850 1.494587e-02 0.002059343</span>
+<span class="co">#&gt; Melanoma    5.217556e-02 1.849298e-01 0.545531481 3.476938e-01 0.537815858</span>
+<span class="co">#&gt;                Pt106_On   Pt106_Pre   Pt108_On    Pt109_On  Pt109_On.2</span>
+<span class="co">#&gt; DC          0.035671425 0.027337513 0.16713974 0.027304017 0.038266818</span>
+<span class="co">#&gt; CD4         0.034817200 0.032580080 0.07533746 0.031573241 0.036255544</span>
+<span class="co">#&gt; CD8         0.278262699 0.276921151 0.06404257 0.256170613 0.242113475</span>
+<span class="co">#&gt; Macrophages 0.041579382 0.051172555 0.04942514 0.009952562 0.008145963</span>
+<span class="co">#&gt; MB          0.036892902 0.027923328 0.12639428 0.028136893 0.039978693</span>
+<span class="co">#&gt; NK          0.036063738 0.029513680 0.19869289 0.139283599 0.126618853</span>
+<span class="co">#&gt; Monocytes   0.005093675 0.005312450 0.07513279 0.009996432 0.006813365</span>
+<span class="co">#&gt; Plasma      0.017746373 0.042241480 0.03147913 0.004793435 0.003803081</span>
+<span class="co">#&gt; MAST        0.025749834 0.023208567 0.08274202 0.025242678 0.023524049</span>
+<span class="co">#&gt; Eosinophil  0.002979679 0.001586318 0.02031414 0.001078193 0.001232735</span>
+<span class="co">#&gt; Melanoma    0.485238604 0.482366956 0.10935924 0.467079188 0.473625112</span>
+<span class="co">#&gt;                 Pt10_On    Pt10_Pre     Pt11_On    Pt11_Pre     Pt13_On</span>
+<span class="co">#&gt; DC          0.065764305 0.089366120 0.081803882 0.069306060 0.134606060</span>
+<span class="co">#&gt; CD4         0.052282769 0.061117868 0.063644054 0.061516722 0.082442959</span>
+<span class="co">#&gt; CD8         0.159757043 0.087387982 0.054496372 0.071948593 0.037753918</span>
+<span class="co">#&gt; Macrophages 0.018949586 0.007005011 0.008557746 0.010194873 0.014005528</span>
+<span class="co">#&gt; MB          0.070651087 0.098724369 0.088365283 0.073332696 0.147143144</span>
+<span class="co">#&gt; NK          0.063341922 0.083844766 0.076221516 0.064609369 0.117789849</span>
+<span class="co">#&gt; Monocytes   0.005036928 0.003175811 0.014357771 0.024665227 0.004386271</span>
+<span class="co">#&gt; Plasma      0.007119968 0.006853410 0.005509734 0.006689007 0.005872885</span>
+<span class="co">#&gt; MAST        0.023345049 0.016945310 0.016830016 0.016439191 0.005339406</span>
+<span class="co">#&gt; Eosinophil  0.004688203 0.001756446 0.049104520 0.047650820 0.001910249</span>
+<span class="co">#&gt; Melanoma    0.529062889 0.543778892 0.541088534 0.553659777 0.448667536</span>
+<span class="co">#&gt;                 Pt16_On     Pt17_On    Pt17_Pre      Pt18_On     Pt18_Pre</span>
+<span class="co">#&gt; DC          0.102621653 0.056083599 0.050254106 2.149831e-06 6.363103e-09</span>
+<span class="co">#&gt; CD4         0.063283694 0.047119321 0.045111055 2.208897e-04 2.479235e-08</span>
+<span class="co">#&gt; CD8         0.053831955 0.561444210 0.554539846 4.604075e-01 4.741189e-01</span>
+<span class="co">#&gt; Macrophages 0.003050602 0.003941921 0.005287182 2.674154e-01 1.004834e-01</span>
+<span class="co">#&gt; MB          0.114690167 0.060684254 0.054096340 1.668612e-07 1.338912e-09</span>
+<span class="co">#&gt; NK          0.095141247 0.151326496 0.131589508 1.476722e-07 1.277907e-09</span>
+<span class="co">#&gt; Monocytes   0.002976019 0.008068345 0.009249082 1.063430e-03 2.629508e-06</span>
+<span class="co">#&gt; Plasma      0.001423086 0.001779898 0.002723551 2.194354e-01 1.495132e-01</span>
+<span class="co">#&gt; MAST        0.010190326 0.032304084 0.029015688 4.957958e-02 5.831446e-02</span>
+<span class="co">#&gt; Eosinophil  0.001708633 0.001513418 0.001419338 7.636381e-07 3.734241e-07</span>
+<span class="co">#&gt; Melanoma    0.551019402 0.075937894 0.116921859 7.824293e-03 2.284904e-01</span>
+<span class="co">#&gt;                  Pt1_On     Pt1_Pre     Pt23_On    Pt23_Pre     Pt24_Pre</span>
+<span class="co">#&gt; DC          0.042361452 0.010276771 0.096812117 0.117625762 0.1863704775</span>
+<span class="co">#&gt; CD4         0.093770656 0.045230684 0.086486300 0.073086233 0.0870730571</span>
+<span class="co">#&gt; CD8         0.183957268 0.366770252 0.086723243 0.048634687 0.3050664463</span>
+<span class="co">#&gt; Macrophages 0.009412306 0.034124052 0.015160641 0.020217926 0.0195912160</span>
+<span class="co">#&gt; MB          0.044298201 0.007998569 0.103893977 0.128164550 0.2054994784</span>
+<span class="co">#&gt; NK          0.040288798 0.007890830 0.098934091 0.126150902 0.1572776183</span>
+<span class="co">#&gt; Monocytes   0.010699054 0.016493912 0.013811993 0.021108388 0.0074400775</span>
+<span class="co">#&gt; Plasma      0.015202960 0.033927336 0.014114792 0.016646141 0.0078074552</span>
+<span class="co">#&gt; MAST        0.033135544 0.046398585 0.033487402 0.018093684 0.0171246664</span>
+<span class="co">#&gt; Eosinophil  0.006940247 0.016644255 0.002099681 0.004706604 0.0057710833</span>
+<span class="co">#&gt; Melanoma    0.520116239 0.415071006 0.448458837 0.425519311 0.0008449091</span>
+<span class="co">#&gt;                 Pt26_On    Pt26_Pre    Pt27_On    Pt27_Pre     Pt28_On</span>
+<span class="co">#&gt; DC          0.056138294 0.067511903 0.02763439 0.002117140 0.094864530</span>
+<span class="co">#&gt; CD4         0.098928234 0.100232265 0.02952406 0.002787942 0.079707944</span>
+<span class="co">#&gt; CD8         0.158785552 0.124484610 0.55241085 0.517629934 0.044791711</span>
+<span class="co">#&gt; Macrophages 0.019282375 0.016018241 0.02188392 0.020085658 0.008790202</span>
+<span class="co">#&gt; MB          0.060426737 0.073116223 0.02545568 0.001830972 0.103536902</span>
+<span class="co">#&gt; NK          0.054465450 0.064334714 0.02712329 0.001908730 0.087284700</span>
+<span class="co">#&gt; Monocytes   0.006879241 0.004838687 0.04628841 0.037263594 0.007822595</span>
+<span class="co">#&gt; Plasma      0.002048503 0.002067878 0.04078784 0.031314977 0.007808103</span>
+<span class="co">#&gt; MAST        0.013409375 0.009695073 0.04359987 0.046226577 0.013994375</span>
+<span class="co">#&gt; Eosinophil  0.001434287 0.001490060 0.02228259 0.116005629 0.002184471</span>
+<span class="co">#&gt; Melanoma    0.528284887 0.536246113 0.16311655 0.224073242 0.549183081</span>
+<span class="co">#&gt;                Pt28_Pre    Pt29_Pre      Pt2_On     Pt2_Pre     Pt30_On</span>
+<span class="co">#&gt; DC          0.111331740 0.081055999 0.046827346 0.039694725 0.068579550</span>
+<span class="co">#&gt; CD4         0.068996508 0.095737622 0.048173767 0.043557684 0.096885702</span>
+<span class="co">#&gt; CD8         0.023357729 0.065414741 0.256312684 0.275241051 0.572254994</span>
+<span class="co">#&gt; Macrophages 0.002580061 0.005927528 0.015347483 0.032398051 0.048137524</span>
+<span class="co">#&gt; MB          0.125718673 0.087723939 0.049150949 0.037897140 0.058255619</span>
+<span class="co">#&gt; NK          0.102908855 0.075416369 0.045019074 0.036513948 0.071368950</span>
+<span class="co">#&gt; Monocytes   0.003715702 0.015953183 0.013764731 0.019885244 0.025083726</span>
+<span class="co">#&gt; Plasma      0.002056112 0.004193611 0.008792555 0.017021749 0.020674771</span>
+<span class="co">#&gt; MAST        0.006869229 0.011996459 0.009851424 0.018800494 0.028761753</span>
+<span class="co">#&gt; Eosinophil  0.001784468 0.002908109 0.003542020 0.005636922 0.006861561</span>
+<span class="co">#&gt; Melanoma    0.550609445 0.553673762 0.503282020 0.473477081 0.003243192</span>
+<span class="co">#&gt;                Pt30_Pre     Pt31_On    Pt31_Pre     Pt32_On      Pt34_On</span>
+<span class="co">#&gt; DC          0.091108967 0.027849161 0.061868571 0.006111095 0.1056322894</span>
+<span class="co">#&gt; CD4         0.060376810 0.048758591 0.053077662 0.006053749 0.0720735429</span>
+<span class="co">#&gt; CD8         0.085042129 0.370961976 0.215896447 0.019609847 0.5774483336</span>
+<span class="co">#&gt; Macrophages 0.002607035 0.020437447 0.005211241 0.010662744 0.0366879960</span>
+<span class="co">#&gt; MB          0.100527223 0.027251794 0.065858103 0.006131976 0.0646494521</span>
+<span class="co">#&gt; NK          0.084777306 0.025540552 0.058613829 0.007232381 0.0628277987</span>
+<span class="co">#&gt; Monocytes   0.005810671 0.011808713 0.006907753 0.015842936 0.0268482144</span>
+<span class="co">#&gt; Plasma      0.001793059 0.021430521 0.006318480 0.002280710 0.0104490685</span>
+<span class="co">#&gt; MAST        0.021806880 0.027373860 0.015368456 0.006637402 0.0347557798</span>
+<span class="co">#&gt; Eosinophil  0.001708210 0.003099975 0.001698119 0.897435558 0.0080275961</span>
+<span class="co">#&gt; Melanoma    0.544392909 0.415716287 0.509192237 0.020969232 0.0006652481</span>
+<span class="co">#&gt;                Pt34_Pre     Pt35_On    Pt36_On   Pt36_Pre      Pt37_On</span>
+<span class="co">#&gt; DC          0.069249867 0.045230192 0.02595561 0.02519193 3.385478e-10</span>
+<span class="co">#&gt; CD4         0.080041025 0.094351727 0.03560917 0.02177173 4.257561e-10</span>
+<span class="co">#&gt; CD8         0.563571414 0.225032397 0.52590583 0.53105653 5.865215e-02</span>
+<span class="co">#&gt; Macrophages 0.025140532 0.008794799 0.02435147 0.14536396 1.621276e-08</span>
+<span class="co">#&gt; MB          0.057041942 0.046940286 0.02256842 0.02116555 3.287949e-10</span>
+<span class="co">#&gt; NK          0.053007937 0.043168623 0.03477429 0.03764361 3.474800e-10</span>
+<span class="co">#&gt; Monocytes   0.021988337 0.011272972 0.05451795 0.05208465 2.212978e-03</span>
+<span class="co">#&gt; Plasma      0.010727449 0.004376611 0.01230875 0.02320640 3.130456e-08</span>
+<span class="co">#&gt; MAST        0.029843471 0.012355957 0.06830441 0.09185272 4.666613e-03</span>
+<span class="co">#&gt; Eosinophil  0.006679567 0.003920081 0.02108671 0.01482096 5.842962e-01</span>
+<span class="co">#&gt; Melanoma    0.082765047 0.504742179 0.17483075 0.03596754 3.601158e-01</span>
+<span class="co">#&gt;                Pt37_On.2    Pt37_Pre   Pt37_Pre.2     Pt38_On    Pt38_Pre</span>
+<span class="co">#&gt; DC          7.220462e-17 0.002161420 9.048996e-05 0.087243344 0.087315732</span>
+<span class="co">#&gt; CD4         1.086311e-16 0.007513034 3.894332e-04 0.063219526 0.061955010</span>
+<span class="co">#&gt; CD8         1.436076e-01 0.216339372 2.052845e-01 0.105628241 0.106181000</span>
+<span class="co">#&gt; Macrophages 3.944739e-14 0.006421604 8.197329e-04 0.002694086 0.002557639</span>
+<span class="co">#&gt; MB          6.599575e-17 0.002021953 8.385490e-05 0.096781178 0.097109810</span>
+<span class="co">#&gt; NK          7.266262e-17 0.002681258 9.168405e-05 0.083581929 0.083952007</span>
+<span class="co">#&gt; Monocytes   3.921505e-02 0.070955677 5.260573e-02 0.005028604 0.004766912</span>
+<span class="co">#&gt; Plasma      3.222444e-15 0.009239147 3.648635e-03 0.001393245 0.001370329</span>
+<span class="co">#&gt; MAST        1.273061e-06 0.056221092 5.354801e-02 0.011716807 0.012205858</span>
+<span class="co">#&gt; Eosinophil  4.421386e-01 0.130853393 1.987592e-01 0.001651929 0.001642802</span>
+<span class="co">#&gt; Melanoma    3.952803e-01 0.497015280 4.884890e-01 0.541019071 0.540899549</span>
+<span class="co">#&gt;                Pt39_Pre      Pt3_On    Pt3_On.2     Pt3_Pre   Pt3_Pre.2</span>
+<span class="co">#&gt; DC          0.089352439 0.051577199 0.084973193 0.091227544 0.099418856</span>
+<span class="co">#&gt; CD4         0.064028670 0.048036002 0.064866328 0.071285174 0.066859000</span>
+<span class="co">#&gt; CD8         0.076502524 0.101375816 0.070235156 0.072534482 0.050691348</span>
+<span class="co">#&gt; Macrophages 0.007374073 0.015563897 0.007521929 0.004038997 0.003257248</span>
+<span class="co">#&gt; MB          0.099474478 0.052733281 0.091994963 0.101504839 0.111228943</span>
+<span class="co">#&gt; NK          0.084274216 0.054924568 0.084542725 0.087886206 0.094448434</span>
+<span class="co">#&gt; Monocytes   0.005345793 0.039736366 0.006528348 0.004070824 0.004113466</span>
+<span class="co">#&gt; Plasma      0.006180070 0.008265064 0.004818511 0.002852421 0.002505974</span>
+<span class="co">#&gt; MAST        0.020154401 0.051323060 0.014586220 0.010899564 0.008097679</span>
+<span class="co">#&gt; Eosinophil  0.001750818 0.025800246 0.017792672 0.003271414 0.003387335</span>
+<span class="co">#&gt; Melanoma    0.545518680 0.550741472 0.552121082 0.550387256 0.555936223</span>
+<span class="co">#&gt;                 Pt44_On     Pt44_Pre     Pt46_On    Pt46_Pre     Pt47_On</span>
+<span class="co">#&gt; DC          0.002408348 3.611871e-06 0.085899984 0.076274630 0.119838345</span>
+<span class="co">#&gt; CD4         0.011561727 1.707336e-05 0.051444141 0.045139685 0.069468957</span>
+<span class="co">#&gt; CD8         0.489967744 1.935460e-01 0.560762182 0.575982688 0.153479329</span>
+<span class="co">#&gt; Macrophages 0.144281373 7.117906e-02 0.048282358 0.052530134 0.016359714</span>
+<span class="co">#&gt; MB          0.001893299 3.379817e-06 0.071767860 0.058442635 0.133202494</span>
+<span class="co">#&gt; NK          0.019272299 3.522672e-06 0.068983055 0.057009806 0.121455110</span>
+<span class="co">#&gt; Monocytes   0.062451272 1.064450e-03 0.016653144 0.028965465 0.008967022</span>
+<span class="co">#&gt; Plasma      0.075272109 2.813568e-01 0.021613373 0.028985457 0.005732735</span>
+<span class="co">#&gt; MAST        0.095657887 2.021281e-02 0.059887443 0.062689249 0.024109519</span>
+<span class="co">#&gt; Eosinophil  0.001369473 4.331352e-05 0.010973065 0.011406007 0.002291903</span>
+<span class="co">#&gt; Melanoma    0.096965471 4.387016e-01 0.003704537 0.002567439 0.345023192</span>
+<span class="co">#&gt;                Pt47_Pre     Pt48_On    Pt48_Pre     Pt49_On    Pt49_Pre</span>
+<span class="co">#&gt; DC          0.109403381 0.251516710 0.235128813 0.020032270 0.043014429</span>
+<span class="co">#&gt; CD4         0.064340781 0.097477063 0.095171456 0.117003688 0.053359669</span>
+<span class="co">#&gt; CD8         0.157299745 0.001185254 0.018335090 0.175275997 0.205933148</span>
+<span class="co">#&gt; Macrophages 0.020228053 0.001944645 0.003701507 0.044350750 0.045672737</span>
+<span class="co">#&gt; MB          0.116481136 0.292014638 0.263417099 0.017534165 0.038482183</span>
+<span class="co">#&gt; NK          0.113418675 0.203635002 0.188410928 0.018623327 0.038914463</span>
+<span class="co">#&gt; Monocytes   0.013613355 0.027951750 0.021457500 0.015664201 0.023958257</span>
+<span class="co">#&gt; Plasma      0.008310596 0.003270010 0.006879121 0.034342351 0.025041415</span>
+<span class="co">#&gt; MAST        0.026288181 0.002750484 0.003938029 0.021290824 0.025671797</span>
+<span class="co">#&gt; Eosinophil  0.003210682 0.002229776 0.002257398 0.006931733 0.004200355</span>
+<span class="co">#&gt; Melanoma    0.367359096 0.115877179 0.161167855 0.529749620 0.495915547</span>
+<span class="co">#&gt;                  Pt4_On     Pt4_Pre     Pt52_On    Pt52_Pre     Pt58_On</span>
+<span class="co">#&gt; DC          0.028935905 0.080327502 0.179088353 0.196639045 0.117641130</span>
+<span class="co">#&gt; CD4         0.122567403 0.063535829 0.086072514 0.089092232 0.076240037</span>
+<span class="co">#&gt; CD8         0.177043100 0.209072487 0.032860450 0.026803469 0.108829015</span>
+<span class="co">#&gt; Macrophages 0.030845875 0.013039243 0.005852772 0.004898742 0.018121863</span>
+<span class="co">#&gt; MB          0.027234492 0.087030887 0.206960844 0.223714131 0.129377277</span>
+<span class="co">#&gt; NK          0.026938226 0.084116235 0.180976383 0.176609297 0.106300368</span>
+<span class="co">#&gt; Monocytes   0.014481000 0.005437085 0.007329734 0.014985676 0.004037943</span>
+<span class="co">#&gt; Plasma      0.027436200 0.002602739 0.005325824 0.005863195 0.003965596</span>
+<span class="co">#&gt; MAST        0.025596597 0.017726464 0.006520443 0.005542371 0.009236131</span>
+<span class="co">#&gt; Eosinophil  0.002392848 0.006340837 0.002128324 0.002164700 0.001991284</span>
+<span class="co">#&gt; Melanoma    0.517064001 0.430750255 0.286779262 0.253568171 0.424184667</span>
+<span class="co">#&gt;               Pt59_Pre      Pt5_On    Pt5_On.2    Pt5_Pre   Pt5_Pre.2</span>
+<span class="co">#&gt; DC          0.01439044 0.028267052 0.043553409 0.01525806 0.049922862</span>
+<span class="co">#&gt; CD4         0.02432648 0.059883958 0.066310569 0.04800337 0.069197615</span>
+<span class="co">#&gt; CD8         0.40289140 0.349183009 0.327274611 0.39890345 0.462698925</span>
+<span class="co">#&gt; Macrophages 0.04618903 0.016138437 0.003660687 0.02577624 0.032653104</span>
+<span class="co">#&gt; MB          0.01190165 0.029199881 0.046246032 0.01371551 0.049011331</span>
+<span class="co">#&gt; NK          0.01294863 0.027431522 0.042193325 0.01384396 0.045540789</span>
+<span class="co">#&gt; Monocytes   0.02390023 0.013159168 0.006191773 0.01994631 0.013412274</span>
+<span class="co">#&gt; Plasma      0.01854640 0.009658035 0.006408493 0.01285202 0.006538867</span>
+<span class="co">#&gt; MAST        0.03780736 0.009259103 0.004790604 0.02101976 0.021777849</span>
+<span class="co">#&gt; Eosinophil  0.01028110 0.020451361 0.001690340 0.03395757 0.039886085</span>
+<span class="co">#&gt; Melanoma    0.39726914 0.437612344 0.451780146 0.39725917 0.209423219</span>
+<span class="co">#&gt;                 Pt62_On    Pt62_Pre     Pt65_On    Pt65_Pre    Pt66_Pre</span>
+<span class="co">#&gt; DC          0.079266503 0.083217758 0.064019942 0.068920190 0.049756190</span>
+<span class="co">#&gt; CD4         0.053842838 0.056712881 0.076089551 0.079386092 0.051202662</span>
+<span class="co">#&gt; CD8         0.110004626 0.085310777 0.108914399 0.083678390 0.188012314</span>
+<span class="co">#&gt; Macrophages 0.003972047 0.002666599 0.018723651 0.020937758 0.010519479</span>
+<span class="co">#&gt; MB          0.084283774 0.090871338 0.063787604 0.070847656 0.053705509</span>
+<span class="co">#&gt; NK          0.073280145 0.078041255 0.063560485 0.069842848 0.059101515</span>
+<span class="co">#&gt; Monocytes   0.011611787 0.004038261 0.006003811 0.009133048 0.005619009</span>
+<span class="co">#&gt; Plasma      0.005012619 0.003244137 0.031768205 0.028420893 0.011566356</span>
+<span class="co">#&gt; MAST        0.026379041 0.048496194 0.025255679 0.022934593 0.051805220</span>
+<span class="co">#&gt; Eosinophil  0.001854269 0.002828394 0.002488271 0.001759172 0.002284743</span>
+<span class="co">#&gt; Melanoma    0.550471788 0.544534500 0.539457360 0.544186975 0.516493527</span>
+<span class="co">#&gt;                  Pt67_On    Pt67_Pre     Pt68_On      Pt69_On    Pt72_Pre</span>
+<span class="co">#&gt; DC          5.221785e-21 0.036363714 0.032931773 0.0702075719 0.162710420</span>
+<span class="co">#&gt; CD4         2.172695e-19 0.065558510 0.036281915 0.0981434990 0.082484103</span>
+<span class="co">#&gt; CD8         2.473747e-02 0.070474087 0.422787797 0.5735414823 0.099525462</span>
+<span class="co">#&gt; Macrophages 1.792610e-02 0.010045448 0.004970731 0.0290615732 0.005494603</span>
+<span class="co">#&gt; MB          4.544317e-21 0.037031241 0.034662153 0.0691659354 0.188895446</span>
+<span class="co">#&gt; NK          6.184837e-21 0.037053691 0.034767834 0.0652342281 0.152524633</span>
+<span class="co">#&gt; Monocytes   3.168021e-01 0.095273130 0.022721307 0.0327773042 0.003325969</span>
+<span class="co">#&gt; Plasma      6.464933e-11 0.004582599 0.003124768 0.0168935734 0.003110760</span>
+<span class="co">#&gt; MAST        3.307575e-01 0.098041309 0.053032157 0.0343423846 0.006208639</span>
+<span class="co">#&gt; Eosinophil  5.839502e-21 0.001506483 0.001328376 0.0102583756 0.002205410</span>
+<span class="co">#&gt; Melanoma    3.331616e-01 0.544264838 0.353482264 0.0004022355 0.293400363</span>
+<span class="co">#&gt;                 Pt76_Pre      Pt77_On    Pt77_Pre     Pt78_On    Pt78_Pre</span>
+<span class="co">#&gt; DC          5.611027e-11 5.993963e-23 0.098552016 0.083049890 0.100851993</span>
+<span class="co">#&gt; CD4         1.164223e-10 1.452719e-20 0.081948474 0.060254458 0.063423912</span>
+<span class="co">#&gt; CD8         1.908986e-01 2.877148e-01 0.041689526 0.087886368 0.056934237</span>
+<span class="co">#&gt; Macrophages 1.073325e-04 3.270909e-01 0.016949755 0.008493919 0.003910897</span>
+<span class="co">#&gt; MB          5.519925e-11 3.072020e-25 0.088281524 0.089827275 0.113424838</span>
+<span class="co">#&gt; NK          5.440719e-10 4.251433e-25 0.075611943 0.079150906 0.094224111</span>
+<span class="co">#&gt; Monocytes   2.872322e-01 2.320345e-05 0.006676165 0.004914120 0.003627490</span>
+<span class="co">#&gt; Plasma      1.770153e-02 2.696094e-01 0.018459995 0.010756150 0.006090609</span>
+<span class="co">#&gt; MAST        3.061137e-01 1.415287e-01 0.013480233 0.015174995 0.007743093</span>
+<span class="co">#&gt; Eosinophil  1.287141e-01 1.359047e-22 0.002195123 0.015924268 0.001733224</span>
+<span class="co">#&gt; Melanoma    7.847789e-02 6.469104e-04 0.556180037 0.544544122 0.547974562</span>
+<span class="co">#&gt;              Pt78_Pre.2     Pt79_On    Pt79_Pre     Pt80_On     Pt81_On</span>
+<span class="co">#&gt; DC          0.093108002 0.077041119 0.091537862 0.054402383 0.128426057</span>
+<span class="co">#&gt; CD4         0.061787599 0.075138884 0.065248633 0.080744714 0.086466232</span>
+<span class="co">#&gt; CD8         0.080686269 0.144057407 0.070282777 0.154369375 0.014963687</span>
+<span class="co">#&gt; Macrophages 0.003522105 0.025416200 0.015604614 0.025440455 0.009100815</span>
+<span class="co">#&gt; MB          0.104161481 0.083646085 0.101113833 0.055627034 0.133895985</span>
+<span class="co">#&gt; NK          0.088270140 0.092010834 0.094104845 0.050980259 0.109627159</span>
+<span class="co">#&gt; Monocytes   0.004038208 0.005725855 0.004461382 0.011498749 0.004790922</span>
+<span class="co">#&gt; Plasma      0.004961056 0.003842043 0.001892352 0.007077759 0.006073625</span>
+<span class="co">#&gt; MAST        0.012449263 0.021618119 0.011904719 0.028459259 0.010791466</span>
+<span class="co">#&gt; Eosinophil  0.001738864 0.001783628 0.001649999 0.004189870 0.002287777</span>
+<span class="co">#&gt; Melanoma    0.545225689 0.469733458 0.542164751 0.527317292 0.493516755</span>
+<span class="co">#&gt;                 Pt82_On    Pt82_Pre     Pt84_On    Pt84_Pre     Pt85_On</span>
+<span class="co">#&gt; DC          0.102209015 0.049305747 0.033904985 0.030483698 0.022171490</span>
+<span class="co">#&gt; CD4         0.071450459 0.040793015 0.062996406 0.049586473 0.030896059</span>
+<span class="co">#&gt; CD8         0.080135442 0.241911457 0.538705704 0.540728304 0.325137013</span>
+<span class="co">#&gt; Macrophages 0.007429318 0.009719747 0.008563655 0.005511754 0.056025798</span>
+<span class="co">#&gt; MB          0.100080603 0.051093489 0.036003105 0.032366735 0.023360146</span>
+<span class="co">#&gt; NK          0.101292117 0.053050801 0.107315284 0.138243580 0.049673908</span>
+<span class="co">#&gt; Monocytes   0.040390926 0.008598005 0.009994049 0.009391773 0.005068145</span>
+<span class="co">#&gt; Plasma      0.009209186 0.008114611 0.002603791 0.001615701 0.003081294</span>
+<span class="co">#&gt; MAST        0.020031993 0.029894835 0.030098186 0.030033942 0.036624445</span>
+<span class="co">#&gt; Eosinophil  0.002071965 0.002059550 0.001249062 0.001090546 0.001285206</span>
+<span class="co">#&gt; Melanoma    0.465695415 0.505516692 0.168916269 0.161439314 0.446993833</span>
+<span class="co">#&gt;                Pt85_Pre      Pt87_On     Pt89_On    Pt89_Pre      Pt8_On</span>
+<span class="co">#&gt; DC          0.033303627 0.0016182058 0.186801938 0.169782905 0.104675644</span>
+<span class="co">#&gt; CD4         0.037742175 0.1292888064 0.087806681 0.084534292 0.072457323</span>
+<span class="co">#&gt; CD8         0.295637811 0.2602581002 0.049268592 0.053955653 0.081237384</span>
+<span class="co">#&gt; Macrophages 0.049775572 0.1308250585 0.005043940 0.004599516 0.003949810</span>
+<span class="co">#&gt; MB          0.036024433 0.0003969614 0.213872441 0.195207799 0.116930258</span>
+<span class="co">#&gt; NK          0.063421064 0.0004297368 0.167882547 0.155562595 0.099345361</span>
+<span class="co">#&gt; Monocytes   0.003277172 0.0574688970 0.007302986 0.024059940 0.004610764</span>
+<span class="co">#&gt; Plasma      0.002798491 0.0905610333 0.004985669 0.003412165 0.008875968</span>
+<span class="co">#&gt; MAST        0.024828358 0.0907937171 0.015587969 0.015921105 0.010010232</span>
+<span class="co">#&gt; Eosinophil  0.001409551 0.0233507202 0.005508978 0.027943759 0.002153924</span>
+<span class="co">#&gt; Melanoma    0.451978321 0.2184464497 0.255818953 0.264906363 0.495692437</span>
+<span class="co">#&gt;                 Pt8_Pre   Pt90_Pre     Pt92_On   Pt92_On.2    Pt92_Pre</span>
+<span class="co">#&gt; DC          0.065288099 0.02264852 0.026453609 0.051591460 0.068822348</span>
+<span class="co">#&gt; CD4         0.061830551 0.02595355 0.219712953 0.133314010 0.093891757</span>
+<span class="co">#&gt; CD8         0.128816366 0.25388431 0.113211287 0.135872966 0.116136212</span>
+<span class="co">#&gt; Macrophages 0.012089352 0.01631183 0.017118985 0.009650086 0.010825712</span>
+<span class="co">#&gt; MB          0.070065221 0.02318113 0.024431854 0.052448555 0.070985334</span>
+<span class="co">#&gt; NK          0.066410033 0.02203965 0.022829956 0.047152223 0.064900097</span>
+<span class="co">#&gt; Monocytes   0.013127337 0.03274068 0.007224734 0.006568309 0.007377896</span>
+<span class="co">#&gt; Plasma      0.026246287 0.00160989 0.012508611 0.009285130 0.006976649</span>
+<span class="co">#&gt; MAST        0.016118082 0.02465886 0.019278666 0.017859343 0.018527562</span>
+<span class="co">#&gt; Eosinophil  0.001886733 0.08251083 0.001504882 0.002195608 0.002369348</span>
+<span class="co">#&gt; Melanoma    0.538144588 0.49465514 0.536498532 0.534279899 0.539244169</span>
+<span class="co">#&gt;              Pt92_Pre.2      Pt93_On     Pt94_On    Pt94_Pre     Pt98_On</span>
+<span class="co">#&gt; DC          0.053468535 0.0036327091 0.113890946 0.064387917 0.061483284</span>
+<span class="co">#&gt; CD4         0.108609314 0.0877004426 0.080700196 0.072097333 0.058161870</span>
+<span class="co">#&gt; CD8         0.154910910 0.3626807333 0.124029040 0.161285766 0.195369277</span>
+<span class="co">#&gt; Macrophages 0.010958390 0.0158829599 0.008250697 0.010726570 0.006056669</span>
+<span class="co">#&gt; MB          0.052705235 0.0036691173 0.110998237 0.064539988 0.063288099</span>
+<span class="co">#&gt; NK          0.048981145 0.0039721324 0.102380686 0.067349114 0.061806267</span>
+<span class="co">#&gt; Monocytes   0.007714945 0.0392242788 0.049924571 0.005242742 0.004166743</span>
+<span class="co">#&gt; Plasma      0.007835564 0.0063645560 0.009129625 0.007913971 0.005269829</span>
+<span class="co">#&gt; MAST        0.022769161 0.0630043098 0.011245094 0.015355078 0.025084427</span>
+<span class="co">#&gt; Eosinophil  0.002220002 0.0006569607 0.002987166 0.003307484 0.001899302</span>
+<span class="co">#&gt; Melanoma    0.529994641 0.4148018240 0.386433160 0.527857765 0.517450794</span>
+<span class="co">#&gt;                Pt98_Pre      Pt9_On     Pt9_Pre</span>
+<span class="co">#&gt; DC          0.061967611 0.052768916 0.047409852</span>
+<span class="co">#&gt; CD4         0.056811678 0.045952186 0.042956719</span>
+<span class="co">#&gt; CD8         0.182865911 0.080895264 0.121663453</span>
+<span class="co">#&gt; Macrophages 0.003300484 0.027873748 0.037841221</span>
+<span class="co">#&gt; MB          0.065874231 0.055069499 0.048051003</span>
+<span class="co">#&gt; NK          0.067747876 0.057843468 0.051226300</span>
+<span class="co">#&gt; Monocytes   0.003931735 0.024999985 0.022736241</span>
+<span class="co">#&gt; Plasma      0.002981559 0.015354884 0.018416130</span>
+<span class="co">#&gt; MAST        0.031148601 0.103920812 0.093422721</span>
+<span class="co">#&gt; Eosinophil  0.001671177 0.003681525 0.005323383</span>
+<span class="co">#&gt; Melanoma    0.521727280 0.531695177 0.511031543</span></code></pre></div>
+<p>Notice that when <code>if.bulk=TRUE</code>, we only use one specific parameters setup, so you do not need to choose anymore, the <code>NIVO_out$result</code> will be a list length 1, containing <span class="math inline">\(W\)</span> and <span class="math inline">\(H\)</span></p>
+</div>
+<div id="easy-way-out" class="section level2">
+<h2>Easy Way Out</h2>
+<p>In a lot of cases, if you just want to use all the default settings and take a quick look, <code>NITUMID_simple</code> wraps everything up for you. You only need to input the raw <span class="math inline">\(Y\)</span> and specify if the data is bulk, and that’s it.</p>
+<p>One thing you need to keep in mind is: in most cases <code>NITUMID_simple</code> will pick up the results for the best consistency for you. However, if the consistency tabl has multiple “best” results, it would still return consistency table and a list results for you to manually decide.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">NITUMID_out_simple &lt;-<span class="st"> </span><span class="kw">NITUMID_simple</span>(<span class="dt">Y=</span>ematrix_GSE6740_CD8,<span class="dt">if.bulk =</span> F)
+<span class="co">#&gt; There are multiple 'best' consistency, please look at all results manually</span>
+NITUMID_out_simple<span class="op">$</span>consistency_table
+<span class="co">#&gt; N1S1 N1S2 N2S1 </span>
+<span class="co">#&gt;    1    1    1</span>
+NITUMID_out_simple<span class="op">$</span>result[[<span class="dv">2</span>]]<span class="op">$</span>H
+<span class="co">#&gt;             GSM155179.CEL GSM155181.CEL GSM155183.CEL GSM155185.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 1.259785e-310</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 1.392213e-310</span>
+<span class="co">#&gt; CD8          1.661126e+00  1.661404e+00  1.531427e+00  1.430981e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 1.266970e-310</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 1.262604e-310</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 1.397852e-310</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 1.257458e-310</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 1.260601e-310</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 1.282871e-310</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 1.263383e-310</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 1.278064e-310</span>
+<span class="co">#&gt;             GSM155187.CEL GSM155190.CEL GSM155195.CEL GSM155201.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD8          1.709909e+00  1.519111e+00  1.646439e+00  1.778649e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt;             GSM155203.CEL GSM155206.CEL GSM155219.CEL GSM155221.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD8          1.528207e+00  1.542562e+00  1.660036e+00  1.732431e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt;             GSM155223.CEL GSM155225.CEL GSM155227.CEL GSM155229.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; CD8          1.645335e+00  1.563941e+00  1.650307e+00  1.657114e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.940656e-324</span>
+<span class="co">#&gt;             GSM155232.CEL GSM155234.CEL GSM155236.CEL GSM155238.CEL</span>
+<span class="co">#&gt; DC          4.940656e-324 4.940656e-324 4.940656e-324 4.061220e-321</span>
+<span class="co">#&gt; CD4         4.940656e-324 4.940656e-324 4.940656e-324 4.471294e-321</span>
+<span class="co">#&gt; CD8          1.575163e+00  1.571083e+00  1.903565e+00  1.448490e+00</span>
+<span class="co">#&gt; Macrophages 4.940656e-324 4.940656e-324 4.940656e-324 4.110626e-321</span>
+<span class="co">#&gt; MB          4.940656e-324 4.940656e-324 4.940656e-324 4.066160e-321</span>
+<span class="co">#&gt; NK          4.940656e-324 4.940656e-324 4.940656e-324 4.397184e-321</span>
+<span class="co">#&gt; Monocytes   4.940656e-324 4.940656e-324 4.940656e-324 4.056279e-321</span>
+<span class="co">#&gt; Plasma      4.940656e-324 4.940656e-324 4.940656e-324 4.061220e-321</span>
+<span class="co">#&gt; MAST        4.940656e-324 4.940656e-324 4.940656e-324 4.194617e-321</span>
+<span class="co">#&gt; Eosinophil  4.940656e-324 4.940656e-324 4.940656e-324 4.071101e-321</span>
+<span class="co">#&gt; Melanoma    4.940656e-324 4.940656e-324 4.940656e-324 4.130389e-321</span></code></pre></div>
+</div>
+<div id="test-mode" class="section level2">
+<h2>Test Mode</h2>
+<p>This part is intended for advanced use of NITUMID. Test Mode in NITUMID is pramarily for benchmarking NITUMID’s performance with data that we know the underlying true cell proportions.</p>
+<p>Consider now we have one example, if we do know all the 11 cell types’ fractions in it, we would have a vector <span class="math inline">\(h_{T}\)</span> length 11, and each of its entry should be the corresponding cell type’s proportion. Let’s further denote the 11 cell types’ proportions we obtained from NITMID is <span class="math inline">\(\hat{h}\)</span>. Then we can measure their consistencies in 3 different metrics:</p>
+<ul>
+<li>Pearson Correlation</li>
+<li>Spearman Correlation</li>
+<li>K-L Divergence</li>
+</ul>
+<p>When <code>test_mode=TRUE</code>, two additional arguments are required:</p>
+<ul>
+<li>real_H: the underlying true proporions for each sample, it is supposed to have 11 rows and same columns number as sample size.</li>
+<li>correlation: which of the metric you would like to use for the consistency measurement, “p” for Pearson Correlation, “s” for Spearman correlation and “kl” for K-L divergence.</li>
+</ul>
+<p>For example, in our previous case for CD8+ T cells, since we know all the 20 samples are CD8+ T cells, we could create the following <code>real_H_cd8</code> matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">real_H_cd8 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">20</span><span class="op">*</span><span class="dv">11</span>),<span class="dt">nrow=</span><span class="dv">11</span>)
+real_H_cd8[<span class="dv">3</span>,]&lt;-<span class="dv">1</span></code></pre></div>
+<p>Then we could benchmark NITUMID with this result:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">GSE6740_CD8_out_benchmark &lt;-<span class="st"> </span><span class="kw">NITUMID</span>(<span class="dt">Y =</span> ematrix_GSE6740_CD8[signature_found<span class="op">$</span>matched_index,],<span class="dt">A =</span> A_melanoma_v5,<span class="dt">row_index =</span> <span class="kw">setdiff</span>(<span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">53</span>),signature_found<span class="op">$</span>missing_row_index),<span class="dt">if.bulk =</span> F,<span class="dt">test_mode =</span> T,<span class="dt">row_mean =</span> row_mean_v5,<span class="dt">real_H =</span> real_H_cd8)
+
+GSE6740_CD8_out_benchmark<span class="op">$</span>real_corr_table
+<span class="co">#&gt; N1S1 N1S2 N2S1 </span>
+<span class="co">#&gt;    1    1    1</span></code></pre></div>
+<p>Notice that here the outcome has one additional field called <code>real_corr_table</code>, which is a list of 3 that gives the mean Pearson correlation between estimated fractions and underlying true fractions under 3 different parameters. Unsurprisingly, we get 1 here!</p>
+<p>Another common circumstance is that when your known cell types do not match the 11 cell types in NITUMID, in this case, we offer an argument <code>cell_structure</code> to adjust for that. <code>cell_structure</code> is a data frame with two variables: * <code>origina_index</code>: a vector from 1-12, indicating the 11 cell types in NITUMID * <code>destin_index</code>: a vector indicating the matching relationship between your cell types and NITUMID’s cell types. For example, if you only have T cells instead of CD4+ T cells and CD8+ T cells, you can put 2 on both the second and third entry in <code>destin_index</code>. In this case, when calculating consistency, the fractions of CD4+ T cells and CD8+ T cells from NITUMID will be merged to one cell type and compare with the 2nd cell type in the <code>real_H</code> you provide.</p>
+<p>Let’s look at the following exmaple, <code>real_mix_gene_expr</code> is a 53 by 4 matrix containing gene expression profiles for 4 samples. And their component cell fractions are known:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(real_mix_gene_expr)
+<span class="co">#&gt; [1] 53  4</span>
+real_H_mix
+<span class="co">#&gt;            [,1]   [,2]   [,3]   [,4]</span>
+<span class="co">#&gt; CD4      0.0082 0.2315 0.0276 0.1815</span>
+<span class="co">#&gt; CD8      0.0035 0.0582 0.0376 0.0454</span>
+<span class="co">#&gt; B        0.1812 0.3248 0.0579 0.4667</span>
+<span class="co">#&gt; NK       0.0050 0.0017 0.0017 0.0025</span>
+<span class="co">#&gt; Melanoma 0.6803 0.0006 0.3756 0.0007</span>
+<span class="co">#&gt; other    0.1218 0.3832 0.4997 0.3031</span></code></pre></div>
+<p>Here, we can see that even though we do know their compositions, we still only have CD4, CD8, B, NK and Melanoma cells, all other cell types are categorized as other (thus <code>real_H</code> matrix is then 6 by 4 instead of 11 by 4). To test NITUMID’s performance on this data, we created the following cell structure:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_structure_real_mix
+<span class="co">#&gt;             original_index destin_index</span>
+<span class="co">#&gt; DC                       1            6</span>
+<span class="co">#&gt; CD4                      2            1</span>
+<span class="co">#&gt; CD8                      3            2</span>
+<span class="co">#&gt; Macrophages              4            6</span>
+<span class="co">#&gt; MB                       5            3</span>
+<span class="co">#&gt; NK                       6            4</span>
+<span class="co">#&gt; Monocytes                7            6</span>
+<span class="co">#&gt; Plasma                   8            6</span>
+<span class="co">#&gt; MAST                     9            6</span>
+<span class="co">#&gt; Eosinophil              10            6</span>
+<span class="co">#&gt; Melanoma                11            5</span></code></pre></div>
+<p>Here we denote all other cell types as the 6th cell type, while CD4, CD8, B, NK and melanoma are 1-5, respectively. And we can evaluate NITUMID’s performance as follow:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">real_mix_benchamrk&lt;-<span class="kw">NITUMID</span>(<span class="dt">Y=</span>real_mix_gene_expr,<span class="dt">A =</span> A_melanoma_v5,<span class="dt">row_index =</span> <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">53</span>),<span class="dt">if.bulk =</span> T,<span class="dt">test_mode =</span> T,<span class="dt">real_H =</span> real_H_mix,<span class="dt">cell_structure =</span> cell_structure_real_mix,<span class="dt">correlation =</span> <span class="st">&quot;p&quot;</span>)
+<span class="co">#&gt; Called from: NITUMID(Y = real_mix_gene_expr, A = A_melanoma_v5, row_index = seq(1, </span>
+<span class="co">#&gt;     53), if.bulk = T, test_mode = T, real_H = real_H_mix, cell_structure = cell_structure_real_mix, </span>
+<span class="co">#&gt;     correlation = &quot;p&quot;)</span>
+<span class="co">#&gt; debug at /Users/tand/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R#381: real_corr_table = mean(diag(cor(transform_H(deconvo_result_bulk$H, </span>
+<span class="co">#&gt;     cell_structure), (real_H))))</span>
+<span class="co">#&gt; debug at /Users/tand/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R#383: if (correlation == &quot;s&quot;) {</span>
+<span class="co">#&gt;     real_corr_table = mean(diag(cor(transform_H(deconvo_result_bulk$H, </span>
+<span class="co">#&gt;         cell_structure), (real_H), method = &quot;spearman&quot;)))</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug at /Users/tand/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R#387: if (correlation == &quot;kl&quot;) {</span>
+<span class="co">#&gt;     temp_kl &lt;- rep(-1, ncol(Y))</span>
+<span class="co">#&gt;     trans_H &lt;- transform_H(deconvo_result_bulk$H, cell_structure)</span>
+<span class="co">#&gt;     for (kl in 1:ncol(Y)) {</span>
+<span class="co">#&gt;         temp_kl[kl] &lt;- kl_div_disc(aa = real_H[, kl], bb = trans_H[, </span>
+<span class="co">#&gt;             kl])</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt;     real_corr_table = mean(temp_kl)</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug at /Users/tand/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R#398: report_consistency_table &lt;- consistency_table</span>
+<span class="co">#&gt; debug at /Users/tand/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R#400: if (test_mode == T) {</span>
+<span class="co">#&gt;     return(list(result = list(deconvo_result_bulk), consistency_table = report_consistency_table, </span>
+<span class="co">#&gt;         real_corr_table = real_corr_table))</span>
+<span class="co">#&gt; } else {</span>
+<span class="co">#&gt;     return(list(result = list(deconvo_result_bulk), consistency_table = report_consistency_table))</span>
+<span class="co">#&gt; }</span>
+<span class="co">#&gt; debug at /Users/tand/Desktop/Lab/Deconvolution/code/source-code/NITUMID/R/core_functions.R#402: return(list(result = list(deconvo_result_bulk), consistency_table = report_consistency_table, </span>
+<span class="co">#&gt;     real_corr_table = real_corr_table))</span>
+real_mix_benchamrk<span class="op">$</span>real_corr_table
+<span class="co">#&gt; [1] 0.557338</span></code></pre></div>
+<p>So here we see that the mean correlation across all 4 samples are 0.55.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -17,13 +17,13 @@ NMF_RNA_Tang(Y, ini.W, ini.H, lam_W, beta_W, A, eta, tol = 10^-5,
 \item{lam_W}{$\\lambda$ is the parameter imposing A's structure into resulting W, see our paper for more info. In
 real calculation, upper level functions will automatically choose suitable $\\lambda$ no need to set by yourself}
 
-\item{beta_W}{$\beta$ is the parameter controlling sparsity ridge penalty, see our paper for more information. In
-real calculation, upper level functions will automatically choose suitable $\beta$ no need to set by yourself}
+\item{beta_W}{$\\beta$ is the parameter controlling sparsity ridge penalty, see our paper for more information. In
+real calculation, upper level functions will automatically choose suitable $\\beta$ no need to set by yourself}
 
 \item{A}{The trichotomous guide matrix A}
 
-\item{eta}{$\eta$ is the parameter for ensuring column sums of H are 1s, upper level function will choose suitable
-$\eta$ automatically, no need to spcify yourself}
+\item{eta}{$\\eta$ is the parameter for ensuring column sums of H are 1s, upper level function will choose suitable
+$\\eta$ automatically, no need to spcify yourself}
 
 \item{tol}{numeric scalar, the cutoff value for stop iterating, default $10^{-5}$}
 
